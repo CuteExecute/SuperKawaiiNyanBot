@@ -132,22 +132,22 @@ async def on_raw_reaction_remove(payload):
         print(f"[on_raw_reaction_remove] - {payload.user_id} - {message_data['event_time']} - {message_data['date']}")
 
 
-@bot.command()
+@bot.command(name='m', aliases=['mrg', 'morning'])
 async def mrg(ctx):
     await ctx.send(f"УТРО - для отметки ставь реакцию ✅\n**|** mrg {datetime.datetime.now().date()}")
 
 
-@bot.command()
+@bot.command(name='d', aliases=['day'])
 async def day(ctx):
     await ctx.send(f"ДЕНЬ - для отметки ставь реакцию ✅\n**|** day {datetime.datetime.now().date()}")
 
 
-@bot.command()
+@bot.command(name='e', aliases=['evg', 'evening'])
 async def evg(ctx):
     await ctx.send(f"ВЕЧЕР - для отметки ставь реакцию ✅\n**|** evg {datetime.datetime.now().date()}")
 
 
-@bot.command()
+@bot.command(name='lc', aliases=['local'])
 async def lc(ctx):
     if not DbHelper.is_user_exists(ctx.author.id):
         user_create(name, dis_id)
@@ -157,46 +157,49 @@ async def lc(ctx):
     await ctx.send(print_profile_pretty(ctx))
 
 
-@bot.command()
-async def sb(ctx):
+@bot.command(name='sb', aliases=['scoreboard'])
+async def scoreboard(ctx):
     await ctx.send(print_scoreboard_month())
 
 
-@bot.command()
-async def shw(ctx):
-    if str(create_show_string(DbHelper.show())):
-        await ctx.send(f'```{create_show_string(DbHelper.show())}```')
+@bot.command(name='shw', aliases=['show'])
+async def show(ctx):
+    if ctx.author.id == 148771435517706240:
+        if str(create_show_string(DbHelper.show())):
+            await ctx.send(f'```{create_show_string(DbHelper.show())}```')
+        else:
+            await ctx.send(f'```NO DATA```')
     else:
-        await ctx.send(f'```NO DATA```')
+        await ctx.send(f'Какой же ты, {ctx.author.mention} - ебаньклаус! :clown:')
 
 
-@bot.command()
-async def tblclear(ctx):
+@bot.command(name='dbclear', aliases=['fucked_up_beyond_all_recognition'])
+async def fucked_up_beyond_all_recognition(ctx):
     if ctx.author.id == 148771435517706240:
         DbHelper.clear_all_table()
         await ctx.send('Clear all results in tables complete!')
     else:
-        await ctx.send(f'Какой же ты, {ctx.author} - ебаньклаус! :clown:')
+        await ctx.send(f'Какой же ты, {ctx.author.mention} - ебаньклаус! :clown:')
 
 
-@bot.command()
+@bot.command(name='n', aliases=['nums'])
 async def nums(ctx, nums_of_img, img_per_user, users):
     try:
         if checked(int(nums_of_img), int(img_per_user), int(users)):
             results = get_rnd_nums_for_users(int(nums_of_img), int(img_per_user), int(users))
-            str = 'Random:!\n'
+            str = 'Леонид Якубович, вращайте барабан!\n'
             for n in results:
                 str += f'{n}\n'
             await ctx.send(f'```{str}```')
             clear_lists()
             results.clear()
         else:
-            await ctx.send(f'Какой же ты, {ctx.author} - ебаньклаус! :clown:')
+            await ctx.send(f'Какой же ты, {ctx.author.mention} - ебаньклаус! :clown:')
     except:
-        await ctx.send(f'Какой же ты, {ctx.author} - ебаньклаус! :clown:')
+        await ctx.send(f'Какой же ты, {ctx.author.mention} - ебаньклаус! :clown:')
 
 
-@bot.command()
+@bot.command(name='ndbg', aliases=['numsdbg'])
 async def numsdbg(ctx, nums_of_img, img_per_user, users):
     try:
         if checked(int(nums_of_img), int(img_per_user), int(users)):
@@ -215,13 +218,14 @@ async def numsdbg(ctx, nums_of_img, img_per_user, users):
             clear_lists()
             results.clear()
         else:
-            await ctx.send(f'Какой же ты, {ctx.author} - ебаньклаус! :clown:')
+            await ctx.send(f'Какой же ты, {ctx.author.mention} - ебаньклаус! :clown:')
     except:
-        await ctx.send(f'Какой же ты, {ctx.author} - ебаньклаус! :clown:')
+        await ctx.send(f'Какой же ты, {ctx.author.mention} - ебаньклаус! :clown:')
 
 
 def checked(nums_of_img: int, img_per_user: int, users: int):
-    if (users * img_per_user) <= nums_of_img and (nums_of_img <= 500 and img_per_user <= 500 and users <= 500):
+    if (users * img_per_user) <= nums_of_img \
+            and (nums_of_img <= 500 and img_per_user <= 500 and users <= 500):
         return True
     else:
         return False
