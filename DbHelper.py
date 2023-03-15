@@ -46,7 +46,7 @@ def user_create(name, dis_id):
         insert_user_query = users.insert().values(name=f'{name}', discord_user_id=f'{dis_id}')
         connection.execute(insert_user_query)
     else:
-        print("Такой уже есть!")
+        print("user is exist!")
 
 
 def user_update(dis_id, new_name):
